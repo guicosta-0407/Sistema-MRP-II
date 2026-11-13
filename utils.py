@@ -34,15 +34,16 @@ def ler_texto(mensagem, obrigatorio=True):
             return texto
         print("ERRO: o campo nao pode ficar vazio.")
 
-def ler_inteiro(mensagem, minimo=None, maximo=None):
+def ler_inteiro(mensagem, minimo=None, maximo=None, padrao=None):
     while True:
         entrada = input(mensagem).strip()
+        if not entrada and padrao is not None:
+            return padrao
         try:
             valor = int(entrada)
         except ValueError:
             print("ERRO: digite um numero inteiro.")
             continue
-        # Checa se o limite foi informado.
         if minimo is not None and valor < minimo:
             print(f"ERRO: o valor minimo e {minimo}.")
             continue
@@ -51,10 +52,11 @@ def ler_inteiro(mensagem, minimo=None, maximo=None):
             continue
         return valor
 
-def ler_decimal(mensagem, minimo=None):
+def ler_decimal(mensagem, minimo=None, padrao=None):
     while True:
-        # Troca a vírgula por ponto antes de usar float.
         entrada = input(mensagem).strip().replace(",", ".")
+        if not entrada and padrao is not None:
+            return padrao
         try:
             valor = float(entrada)
         except ValueError:
