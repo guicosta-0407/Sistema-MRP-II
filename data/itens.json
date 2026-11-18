@@ -1,0 +1,11 @@
+{
+  "PA-001": {
+    "descricao": "Bicicleta Aro 29 MTB",
+    "tipo": "PA",
+    "unidade": "un",
+    "custo": 0.0,
+    "lead_time": 1,
+    "estoque_seguranca": 0,
+    "lote_minimo": 1
+  }
+}
