@@ -1,6 +1,23 @@
 {
   "PA-001": [
     {"componente": "SA-010", "quantidade": 1},
-    {"componente": "MP-300", "quantidade": 1}
+    {"componente": "SA-020", "quantidade": 2},
+    {"componente": "MP-300", "quantidade": 1},
+    {"componente": "MP-301", "quantidade": 1}
+  ],
+  "PA-002": [
+    {"componente": "SA-010", "quantidade": 1},
+    {"componente": "SA-020", "quantidade": 2},
+    {"componente": "MP-300", "quantidade": 1},
+    {"componente": "MP-302", "quantidade": 1}
+  ],
+  "SA-010": [
+    {"componente": "MP-100", "quantidade": 3},
+    {"componente": "MP-101", "quantidade": 0.5}
+  ],
+  "SA-020": [
+    {"componente": "MP-200", "quantidade": 1},
+    {"componente": "MP-201", "quantidade": 36},
+    {"componente": "MP-202", "quantidade": 1}
   ]
 }
