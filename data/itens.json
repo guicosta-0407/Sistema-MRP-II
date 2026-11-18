@@ -5,7 +5,106 @@
     "unidade": "un",
     "custo": 0.0,
     "lead_time": 1,
-    "estoque_seguranca": 0,
-    "lote_minimo": 1
+    "estoque_seguranca": 5,
+    "lote_minimo": 10
+  },
+  "PA-002": {
+    "descricao": "Bicicleta Aro 29 Urbana",
+    "tipo": "PA",
+    "unidade": "un",
+    "custo": 0.0,
+    "lead_time": 1,
+    "estoque_seguranca": 5,
+    "lote_minimo": 10
+  },
+  "SA-010": {
+    "descricao": "Quadro aro 29 soldado",
+    "tipo": "SA",
+    "unidade": "un",
+    "custo": 0.0,
+    "lead_time": 1,
+    "estoque_seguranca": 10,
+    "lote_minimo": 40
+  },
+  "SA-020": {
+    "descricao": "Roda aro 29 montada",
+    "tipo": "SA",
+    "unidade": "un",
+    "custo": 0.0,
+    "lead_time": 1,
+    "estoque_seguranca": 10,
+    "lote_minimo": 80
+  },
+  "MP-100": {
+    "descricao": "Tubo de aco carbono",
+    "tipo": "MP",
+    "unidade": "m",
+    "custo": 25.0,
+    "lead_time": 2,
+    "estoque_seguranca": 60,
+    "lote_minimo": 300
+  },
+  "MP-101": {
+    "descricao": "Tinta epoxi",
+    "tipo": "MP",
+    "unidade": "L",
+    "custo": 30.0,
+    "lead_time": 1,
+    "estoque_seguranca": 5,
+    "lote_minimo": 50
+  },
+  "MP-200": {
+    "descricao": "Aro 29 aluminio",
+    "tipo": "MP",
+    "unidade": "un",
+    "custo": 35.0,
+    "lead_time": 2,
+    "estoque_seguranca": 100,
+    "lote_minimo": 200
+  },
+  "MP-201": {
+    "descricao": "Raio inox",
+    "tipo": "MP",
+    "unidade": "un",
+    "custo": 0.8,
+    "lead_time": 2,
+    "estoque_seguranca": 1000,
+    "lote_minimo": 2000
+  },
+  "MP-202": {
+    "descricao": "Pneu 29 x 2.20",
+    "tipo": "MP",
+    "unidade": "un",
+    "custo": 55.0,
+    "lead_time": 2,
+    "estoque_seguranca": 20,
+    "lote_minimo": 100
+  },
+  "MP-300": {
+    "descricao": "Guidao",
+    "tipo": "MP",
+    "unidade": "un",
+    "custo": 45.0,
+    "lead_time": 2,
+    "estoque_seguranca": 20,
+    "lote_minimo": 50
+  },
+  "MP-301": {
+    "descricao": "Kit transmissao 12v",
+    "tipo": "MP",
+    "unidade": "un",
+    "custo": 320.0,
+    "lead_time": 3,
+    "estoque_seguranca": 10,
+    "lote_minimo": 20
+  },
+  "MP-302": {
+    "descricao": "Kit transmissao 7v",
+    "tipo": "MP",
+    "unidade": "un",
+    "custo": 150.0,
+    "lead_time": 3,
+    "estoque_seguranca": 10,
+    "lote_minimo": 20
   }
 }
