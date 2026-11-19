@@ -1,7 +1,9 @@
 import utils
+from capacidade import Capacidade
 from estoque import Estoque
 from estrutura import Estrutura
 from itens import CadastroItens
+from mps import PlanoMestre
 from persistencia import ErroPersistencia
 
 LARGURA = 50
@@ -12,6 +14,8 @@ class Menu:
         self.itens = CadastroItens(repositorio)
         self.estrutura = Estrutura(repositorio, self.itens)
         self.estoque = Estoque(repositorio, self.itens)
+        self.capacidade = Capacidade(repositorio, self.itens)
+        self.mps = PlanoMestre(repositorio, self.itens)
 
     @staticmethod
     def _cabecalho(titulo):
@@ -59,31 +63,73 @@ class Menu:
                 self.cadastros()
             elif opcao == "2":
                 self.submenu_estoque()
+            elif opcao == "3":
+                self.submenu_mps()
             else:
                 print("Opcao ainda nao implementada.")
 
     def cadastros(self):
         acoes = {
+            "1": ("Itens", self.submenu_itens),
+            "2": ("Estrutura de produto (BOM)", self.submenu_estrutura),
+            "3": ("Centros de trabalho e roteiros", self.submenu_centros),
+        }
+        self._submenu("CADASTROS", acoes)
+
+    def submenu_itens(self):
+        acoes = {
             "1": ("Cadastrar item", self.itens.cadastrar_interativo),
             "2": ("Alterar item", self.itens.alterar_interativo),
             "3": ("Listar itens", self.itens.exibir_lista),
-            "4": (
-                "Adicionar componente a estrutura",
+            "4": ("Remover item", self.remover_item),
+        }
+        self._submenu("CADASTRO DE ITENS", acoes)
+
+    def submenu_estrutura(self):
+        acoes = {
+            "1": (
+                "Adicionar componente",
                 self.estrutura.cadastrar_componente_interativo,
             ),
-            "5": (
+            "2": (
                 "Alterar quantidade de componente",
                 self.estrutura.alterar_quantidade_interativo,
             ),
-            "6": (
-                "Remover componente da estrutura",
+            "3": (
+                "Remover componente",
                 self.estrutura.remover_componente_interativo,
             ),
-            "7": ("Exibir estrutura (BOM)", self.estrutura.exibir_interativo),
-            "8": ("Remover item", self.remover_item),
-            "9": ("Onde o item e usado", self.estrutura.onde_usado_interativo),
+            "4": ("Exibir estrutura (BOM)", self.estrutura.exibir_interativo),
+            "5": ("Onde o item e usado", self.estrutura.onde_usado_interativo),
         }
-        self._submenu("CADASTROS", acoes)
+        self._submenu("ESTRUTURA DE PRODUTO", acoes)
+
+    def submenu_centros(self):
+        acoes = {
+            "1": (
+                "Cadastrar centro de trabalho",
+                self.capacidade.cadastrar_centro_interativo,
+            ),
+            "2": (
+                "Alterar centro de trabalho",
+                self.capacidade.alterar_centro_interativo,
+            ),
+            "3": ("Listar centros", self.capacidade.exibir_centros),
+            "4": (
+                "Remover centro de trabalho",
+                self.capacidade.remover_centro_interativo,
+            ),
+            "5": (
+                "Definir roteiro de um item",
+                self.capacidade.definir_roteiro_interativo,
+            ),
+            "6": ("Listar roteiros", self.capacidade.exibir_roteiros),
+            "7": (
+                "Remover roteiro de um item",
+                self.capacidade.remover_roteiro_interativo,
+            ),
+        }
+        self._submenu("CENTROS DE TRABALHO E ROTEIROS", acoes)
 
     def submenu_estoque(self):
         acoes = {
@@ -92,6 +138,17 @@ class Menu:
             "3": ("Posicao de estoque", self.estoque.exibir_posicao),
         }
         self._submenu("ESTOQUE", acoes)
+
+    def submenu_mps(self):
+        acoes = {
+            "1": (
+                "Cadastrar ou alterar demanda de um produto",
+                self.mps.definir_interativo,
+            ),
+            "2": ("Exibir plano mestre", self.mps.exibir),
+            "3": ("Remover produto do plano", self.mps.remover_interativo),
+        }
+        self._submenu("PLANO MESTRE DE PRODUCAO (MPS)", acoes)
 
     def remover_item(self):
         print(">> Remocao de item")
@@ -111,6 +168,18 @@ class Menu:
                     f"ERRO: {codigo} possui estrutura propria. "
                     "Remova os componentes dele antes."
                 )
+            return
+        if self.capacidade.roteiro(codigo):
+            print(
+                f"ERRO: {codigo} possui roteiro de fabricacao. "
+                "Remova o roteiro antes."
+            )
+            return
+        if self.mps.possui_demanda(codigo):
+            print(
+                f"ERRO: {codigo} esta no plano mestre. "
+                "Remova-o do MPS antes."
+            )
             return
         if self.estoque.possui_movimento(codigo):
             print(
