@@ -3,7 +3,7 @@ from datetime import date, datetime
 
 PADRAO_CODIGO = re.compile(r"^(PA|SA|MP)-\d{3,}$")
 TIPOS_VALIDOS = ("PA", "SA", "MP")
-
+PADRAO_CENTRO = re.compile(r"^CT-\d{2,}$")
 
 
 def normalizar_codigo(texto):
@@ -90,6 +90,17 @@ def ler_codigo(mensagem, tipos=TIPOS_VALIDOS):
             print(f"ERRO: o tipo deve ser um destes: {', '.join(tipos)}.")
             continue
         return codigo
+
+def codigo_centro_valido(codigo):
+    return bool(PADRAO_CENTRO.match(codigo))
+
+
+def ler_codigo_centro(mensagem):
+    while True:
+        codigo = normalizar_codigo(input(mensagem))
+        if codigo_centro_valido(codigo):
+            return codigo
+        print("ERRO: formato invalido. Use CT-Numero (ex.: CT-01).")
 
 def ler_data(mensagem):
     while True:
