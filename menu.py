@@ -4,6 +4,8 @@ from estoque import Estoque
 from estrutura import Estrutura
 from itens import CadastroItens
 from mps import PlanoMestre
+from mrp import CalculoMRP
+from ordens import GerenciadorOrdens
 from persistencia import ErroPersistencia
 
 LARGURA = 50
@@ -16,6 +18,12 @@ class Menu:
         self.estoque = Estoque(repositorio, self.itens)
         self.capacidade = Capacidade(repositorio, self.itens)
         self.mps = PlanoMestre(repositorio, self.itens)
+        self.ordens = GerenciadorOrdens(
+            repositorio, self.itens, self.estrutura, self.estoque
+        )
+        self.mrp = CalculoMRP(
+            self.itens, self.estrutura, self.estoque, self.mps, self.ordens
+        )
 
     @staticmethod
     def _cabecalho(titulo):
@@ -65,6 +73,10 @@ class Menu:
                 self.submenu_estoque()
             elif opcao == "3":
                 self.submenu_mps()
+            elif opcao == "4":
+                self.submenu_mrp()
+            elif opcao == "5":
+                self.submenu_ordens()
             else:
                 print("Opcao ainda nao implementada.")
 
@@ -134,7 +146,10 @@ class Menu:
     def submenu_estoque(self):
         acoes = {
             "1": ("Movimentar estoque", self.estoque.movimentar_interativo),
-            "2": ("Consultar saldo e kardex", self.estoque.consultar_interativo),
+            "2": (
+                "Consultar saldo e kardex",
+                self.estoque.consultar_interativo,
+            ),
             "3": ("Posicao de estoque", self.estoque.exibir_posicao),
         }
         self._submenu("ESTOQUE", acoes)
@@ -149,6 +164,30 @@ class Menu:
             "3": ("Remover produto do plano", self.mps.remover_interativo),
         }
         self._submenu("PLANO MESTRE DE PRODUCAO (MPS)", acoes)
+
+    def submenu_mrp(self):
+        acoes = {
+            "1": (
+                "Executar MRP e gerar ordens planejadas",
+                self.mrp.executar_interativo,
+            ),
+            "2": (
+                "Exibir registro MRP de um item",
+                self.mrp.exibir_registro_interativo,
+            ),
+            "3": ("Exibir mensagens de excecao", self.mrp.exibir_excecoes),
+        }
+        self._submenu("MRP - PLANEJAMENTO DAS NECESSIDADES", acoes)
+
+    def submenu_ordens(self):
+        acoes = {
+            "1": (
+                "Ordens em aberto (firmar, liberar, apontar, receber)",
+                self.ordens.gerenciar_interativo,
+            ),
+            "2": ("Listar ordens encerradas", self.ordens.exibir_encerradas),
+        }
+        self._submenu("ORDENS DE PRODUCAO E DE COMPRA", acoes)
 
     def remover_item(self):
         print(">> Remocao de item")
@@ -179,6 +218,12 @@ class Menu:
             print(
                 f"ERRO: {codigo} esta no plano mestre. "
                 "Remova-o do MPS antes."
+            )
+            return
+        if self.ordens.possui_ordem(codigo):
+            print(
+                f"ERRO: {codigo} possui ordens de producao ou de compra "
+                "e nao pode ser removido."
             )
             return
         if self.estoque.possui_movimento(codigo):
