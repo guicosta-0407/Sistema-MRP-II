@@ -1,4 +1,5 @@
 import utils
+from mps import HORIZONTE
 
 
 class CentroTrabalho:
@@ -106,7 +107,8 @@ class Capacidade:
         usados = self.itens_do_centro(codigo)
         if usados:
             raise ValueError(
-                f"o centro {codigo} e usado no roteiro de: {', '.join(usados)}"
+                f"o centro {codigo} e usado no roteiro de: "
+                f"{', '.join(usados)}"
             )
         del self.centros[codigo]
         self.salvar_centros()
@@ -118,7 +120,8 @@ class Capacidade:
         item = self.cadastro.obter(codigo_item)
         if not item.fabricado:
             raise ValueError(
-                f"{codigo_item} e materia-prima e nao tem roteiro de fabricacao"
+                f"{codigo_item} e materia-prima e nao tem roteiro "
+                "de fabricacao"
             )
         self.obter_centro(codigo_centro)
         if tempo <= 0:
@@ -140,21 +143,24 @@ class Capacidade:
               f"{'Cap. (h/sem)':>13}{'Custo-hora':>12}")
         print("-" * 67)
         for centro in self.listar_centros():
+            capacidade = utils.formatar_decimal(centro.capacidade)
             print(f"{centro.codigo:<8}{centro.descricao[:32]:<34}"
-                  f"{utils.formatar_decimal(centro.capacidade):>13}"
+                  f"{capacidade:>13}"
                   f"{utils.formatar_moeda(centro.custo_hora):>12}")
 
     def exibir_roteiros(self):
         if not self.roteiros:
             print("Nenhum roteiro cadastrado.")
             return
-        print(f"{'Item':<8}{'Descricao':<30}{'Centro':<8}{'Tempo (h/un)':>13}")
+        print(f"{'Item':<8}{'Descricao':<30}{'Centro':<8}"
+              f"{'Tempo (h/un)':>13}")
         print("-" * 59)
         for codigo in sorted(self.roteiros):
             roteiro = self.roteiros[codigo]
             item = self.cadastro.obter(codigo)
-            print(f"{codigo:<8}{item.descricao[:28]:<30}{roteiro['centro']:<8}"
-                  f"{utils.formatar_quantidade(roteiro['tempo']):>13}")
+            tempo = utils.formatar_quantidade(roteiro["tempo"])
+            print(f"{codigo:<8}{item.descricao[:28]:<30}"
+                  f"{roteiro['centro']:<8}{tempo:>13}")
 
     def cadastrar_centro_interativo(self):
         print(">> Cadastro de centro de trabalho")
@@ -182,12 +188,13 @@ class Capacidade:
             print(f"ERRO: o centro {codigo} nao esta cadastrado.")
             return
         centro = self.obter_centro(codigo)
+        atual = utils.formatar_decimal(centro.capacidade)
         campos = {
             "descricao": utils.ler_texto(
                 f">> Descricao [{centro.descricao}]: ", obrigatorio=False
             ) or centro.descricao,
             "capacidade": utils.ler_decimal(
-                f">> Capacidade [{utils.formatar_decimal(centro.capacidade)}]: ",
+                f">> Capacidade [{atual}]: ",
                 minimo=0, padrao=centro.capacidade,
             ),
             "custo_hora": utils.ler_decimal(
@@ -252,3 +259,97 @@ class Capacidade:
             print(f"ERRO: {erro}.")
             return
         print(f"Roteiro de {codigo} removido.")
+
+
+class CalculoCRP:
+    def __init__(self, capacidade, ordens):
+        self.capacidade = capacidade
+        self.ordens = ordens
+
+    def carga_semanal(self, codigo_centro):
+        self.capacidade.obter_centro(codigo_centro)
+        carga = [0.0] * HORIZONTE
+        for ordem in self.ordens.listar():
+            if ordem.tipo != "OP":
+                continue
+            roteiro = self.capacidade.roteiro(ordem.item)
+            if roteiro is None or roteiro["centro"] != codigo_centro:
+                continue
+            semana = max(ordem.semana_liberacao, 1)
+            if semana <= HORIZONTE:
+                carga[semana - 1] += ordem.quantidade * roteiro["tempo"]
+        return [round(horas, 4) for horas in carga]
+
+    def uso_percentual(self, codigo_centro):
+        centro = self.capacidade.obter_centro(codigo_centro)
+        return [
+            horas / centro.capacidade * 100
+            for horas in self.carga_semanal(codigo_centro)
+        ]
+
+    def semanas_sobrecarga(self, codigo_centro):
+        centro = self.capacidade.obter_centro(codigo_centro)
+        return [
+            semana
+            for semana, horas in enumerate(
+                self.carga_semanal(codigo_centro), start=1
+            )
+            if horas > centro.capacidade
+        ]
+
+    @staticmethod
+    def _lista_de_semanas(semanas):
+        textos = [str(semana) for semana in semanas]
+        if len(textos) == 1:
+            return f"na semana {textos[0]}"
+        return f"nas semanas {', '.join(textos[:-1])} e {textos[-1]}"
+
+    def exibir_carga(self, codigo_centro):
+        centro = self.capacidade.obter_centro(codigo_centro)
+        carga = self.carga_semanal(codigo_centro)
+        usos = self.uso_percentual(codigo_centro)
+        capacidade = utils.formatar_decimal(centro.capacidade)
+        print(f"CARGA x CAPACIDADE - {centro.codigo} {centro.descricao} "
+              f"({capacidade} h/semana)")
+        print(f"{'Sem':>3}{'Carga(h)':>10}{'Uso(%)':>8}")
+        sobrecarga = self.semanas_sobrecarga(codigo_centro)
+        for semana, (horas, uso) in enumerate(zip(carga, usos), start=1):
+            barra = "#" * round(uso / 10)
+            aviso = " SOBRECARGA" if semana in sobrecarga else ""
+            print(f"{semana:>3}{utils.formatar_decimal(horas):>10}"
+                  f"{round(uso):>8}  {barra}{aviso}")
+        if sobrecarga:
+            print("Sugestao: antecipar OPs ou programar hora extra "
+                  f"{self._lista_de_semanas(sobrecarga)}.")
+        else:
+            print("Nenhuma semana com sobrecarga.")
+
+    def exibir_resumo(self):
+        centros = self.capacidade.listar_centros()
+        if not centros:
+            print("Nenhum centro de trabalho cadastrado.")
+            return
+        print("CARGA x CAPACIDADE - uso (%) por semana; * = sobrecarga")
+        semanas = "".join(
+            f"{'S' + str(s):>7}" for s in range(1, HORIZONTE + 1)
+        )
+        print(f"{'Centro':<8}{'Cap.(h)':>8}{semanas}")
+        print("-" * (16 + 7 * HORIZONTE))
+        for centro in centros:
+            sobrecarga = self.semanas_sobrecarga(centro.codigo)
+            celulas = ""
+            for semana, uso in enumerate(
+                self.uso_percentual(centro.codigo), start=1
+            ):
+                marca = "*" if semana in sobrecarga else ""
+                celulas += f"{str(round(uso)) + '%' + marca:>7}"
+            capacidade = utils.formatar_decimal(centro.capacidade)
+            print(f"{centro.codigo:<8}{capacidade:>8}{celulas}")
+
+    def exibir_interativo(self):
+        self.capacidade.exibir_centros()
+        codigo = utils.ler_codigo_centro(">> Codigo do centro: ")
+        try:
+            self.exibir_carga(codigo)
+        except ValueError as erro:
+            print(f"ERRO: {erro}.")
