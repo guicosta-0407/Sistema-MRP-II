@@ -1,12 +1,15 @@
 import utils
-from capacidade import Capacidade
+from capacidade import CalculoCRP, Capacidade
+from custos import CalculoCustos
 from estoque import Estoque
 from estrutura import Estrutura
+from graficos import GraficosGestao
 from itens import CadastroItens
 from mps import PlanoMestre
 from mrp import CalculoMRP
 from ordens import GerenciadorOrdens
 from persistencia import ErroPersistencia
+from relatorios import Relatorios
 
 LARGURA = 50
 
@@ -23,6 +26,17 @@ class Menu:
         )
         self.mrp = CalculoMRP(
             self.itens, self.estrutura, self.estoque, self.mps, self.ordens
+        )
+        self.crp = CalculoCRP(self.capacidade, self.ordens)
+        self.custos = CalculoCustos(
+            self.itens, self.estrutura, self.capacidade
+        )
+        self.relatorios = Relatorios(
+            repositorio, self.itens, self.estoque, self.ordens
+        )
+        self.graficos = GraficosGestao(
+            repositorio, self.itens, self.estoque, self.mrp, self.ordens,
+            self.crp,
         )
 
     @staticmethod
@@ -51,6 +65,17 @@ class Menu:
             self._executar(acoes[opcao][1])
 
     def principal(self):
+        destinos = {
+            "1": self.cadastros,
+            "2": self.submenu_estoque,
+            "3": self.submenu_mps,
+            "4": self.submenu_mrp,
+            "5": self.submenu_ordens,
+            "6": self.submenu_crp,
+            "7": self.submenu_custos,
+            "8": self.submenu_relatorios,
+            "9": self.submenu_graficos,
+        }
         while True:
             self._cabecalho("MRP II - PEDAL FORTE BICICLETAS")
             print("1. Cadastros (itens, estrutura, centros, roteiros)")
@@ -61,24 +86,16 @@ class Menu:
             print("6. Carga x capacidade (CRP)")
             print("7. Custo padrao dos produtos")
             print("8. Relatorios (exportar CSV)")
+            print("9. Graficos de gestao (matplotlib)")
             print("0. Sair")
             print("-" * LARGURA)
-            opcao = utils.ler_opcao("Escolha uma opcao: ", list("123456780"))
+            opcao = utils.ler_opcao(
+                "Escolha uma opcao: ", [*destinos, "0"]
+            )
             if opcao == "0":
                 print("Ate logo!")
                 return
-            if opcao == "1":
-                self.cadastros()
-            elif opcao == "2":
-                self.submenu_estoque()
-            elif opcao == "3":
-                self.submenu_mps()
-            elif opcao == "4":
-                self.submenu_mrp()
-            elif opcao == "5":
-                self.submenu_ordens()
-            else:
-                print("Opcao ainda nao implementada.")
+            destinos[opcao]()
 
     def cadastros(self):
         acoes = {
@@ -112,7 +129,10 @@ class Menu:
                 self.estrutura.remover_componente_interativo,
             ),
             "4": ("Exibir estrutura (BOM)", self.estrutura.exibir_interativo),
-            "5": ("Onde o item e usado", self.estrutura.onde_usado_interativo),
+            "5": (
+                "Onde o item e usado",
+                self.estrutura.onde_usado_interativo,
+            ),
         }
         self._submenu("ESTRUTURA DE PRODUTO", acoes)
 
@@ -189,48 +209,74 @@ class Menu:
         }
         self._submenu("ORDENS DE PRODUCAO E DE COMPRA", acoes)
 
+    def submenu_crp(self):
+        acoes = {
+            "1": (
+                "Carga x capacidade de um centro",
+                self.crp.exibir_interativo,
+            ),
+            "2": ("Resumo de todos os centros", self.crp.exibir_resumo),
+        }
+        self._submenu("CARGA x CAPACIDADE (CRP)", acoes)
+
+    def submenu_custos(self):
+        acoes = {
+            "1": (
+                "Custo padrao de um item fabricado",
+                self.custos.exibir_interativo,
+            ),
+            "2": ("Resumo dos itens fabricados", self.custos.exibir_resumo),
+            "3": (
+                "Gravar custo padrao nos itens",
+                self.custos.atualizar_interativo,
+            ),
+        }
+        self._submenu("CUSTO PADRAO", acoes)
+
+    def submenu_relatorios(self):
+        acoes = {
+            "1": (
+                "Exportar posicao de estoque",
+                self.relatorios.exportar_estoque_interativo,
+            ),
+            "2": (
+                "Exportar lista de ordens",
+                self.relatorios.exportar_ordens_interativo,
+            ),
+            "3": (
+                "Exportar os dois relatorios",
+                self.relatorios.exportar_tudo_interativo,
+            ),
+        }
+        self._submenu("RELATORIOS (CSV)", acoes)
+
+    def submenu_graficos(self):
+        acoes = {
+            "1": ("Posicao de estoque", self.graficos.posicao_estoque),
+            "2": (
+                "Estoque projetado de um item",
+                self.graficos.estoque_projetado_interativo,
+            ),
+            "3": (
+                "Ordens por semana de entrega",
+                self.graficos.ordens_por_semana,
+            ),
+            "4": (
+                "Carga x capacidade de um centro",
+                self.graficos.carga_capacidade_interativo,
+            ),
+        }
+        self._submenu("GRAFICOS DE GESTAO", acoes)
+
     def remover_item(self):
         print(">> Remocao de item")
         codigo = utils.ler_codigo(">> Codigo do item: ")
         if not self.itens.existe(codigo):
             print(f"ERRO: o item {codigo} nao esta cadastrado.")
             return
-        if self.estrutura.em_uso(codigo):
-            pais = self.estrutura.pais_de(codigo)
-            if pais:
-                print(
-                    f"ERRO: {codigo} e componente de: {', '.join(pais)}. "
-                    "Remova-o da BOM antes."
-                )
-            else:
-                print(
-                    f"ERRO: {codigo} possui estrutura propria. "
-                    "Remova os componentes dele antes."
-                )
-            return
-        if self.capacidade.roteiro(codigo):
-            print(
-                f"ERRO: {codigo} possui roteiro de fabricacao. "
-                "Remova o roteiro antes."
-            )
-            return
-        if self.mps.possui_demanda(codigo):
-            print(
-                f"ERRO: {codigo} esta no plano mestre. "
-                "Remova-o do MPS antes."
-            )
-            return
-        if self.ordens.possui_ordem(codigo):
-            print(
-                f"ERRO: {codigo} possui ordens de producao ou de compra "
-                "e nao pode ser removido."
-            )
-            return
-        if self.estoque.possui_movimento(codigo):
-            print(
-                f"ERRO: {codigo} possui movimentacoes no kardex e nao pode "
-                "ser removido (RN10)."
-            )
+        motivo = self._motivo_para_nao_remover(codigo)
+        if motivo:
+            print(f"ERRO: {motivo}")
             return
         confirmacao = utils.ler_opcao(
             f">> Remover {codigo}? [S/N]: ", ["S", "N"]
@@ -240,3 +286,24 @@ class Menu:
             return
         self.itens.remover(codigo)
         print(f"Item {codigo} removido.")
+
+    def _motivo_para_nao_remover(self, codigo):
+        if self.estrutura.em_uso(codigo):
+            pais = self.estrutura.pais_de(codigo)
+            if pais:
+                return (f"{codigo} e componente de: {', '.join(pais)}. "
+                        "Remova-o da BOM antes.")
+            return (f"{codigo} possui estrutura propria. "
+                    "Remova os componentes dele antes.")
+        if self.capacidade.roteiro(codigo):
+            return (f"{codigo} possui roteiro de fabricacao. "
+                    "Remova o roteiro antes.")
+        if self.mps.possui_demanda(codigo):
+            return f"{codigo} esta no plano mestre. Remova-o do MPS antes."
+        if self.ordens.possui_ordem(codigo):
+            return (f"{codigo} possui ordens de producao ou de compra "
+                    "e nao pode ser removido.")
+        if self.estoque.possui_movimento(codigo):
+            return (f"{codigo} possui movimentacoes no kardex e nao pode "
+                    "ser removido (RN10).")
+        return None

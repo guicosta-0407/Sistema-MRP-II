@@ -9,7 +9,6 @@ class ErroPersistencia(Exception):
 
 class Repositorio:
     def __init__(self, diretorio=None):
-        # Usa data/ relativa a este arquivo, independentemente do diretório de execução.
         base = Path(__file__).resolve().parent
         self.diretorio = Path(diretorio) if diretorio else base / "data"
         self.diretorio.mkdir(parents=True, exist_ok=True)
@@ -17,9 +16,13 @@ class Repositorio:
     def caminho(self, nome):
         return self.diretorio / nome
 
+    def pasta(self, nome):
+        destino = self.diretorio / nome
+        destino.mkdir(parents=True, exist_ok=True)
+        return destino
+
     def carregar_json(self, nome, padrao=None):
         arquivo = self.caminho(nome)
-        # Se ausente, retorna o padrão informado ou {}.
         if not arquivo.exists():
             return {} if padrao is None else padrao
         try:
@@ -31,7 +34,6 @@ class Repositorio:
     def salvar_json(self, nome, dados):
         arquivo = self.caminho(nome)
         temporario = arquivo.with_suffix(".tmp")
-        # Substitui o original somente após concluir a gravação temporária.
         with temporario.open("w", encoding="utf-8") as f:
             json.dump(dados, f, ensure_ascii=False, indent=2)
         temporario.replace(arquivo)
@@ -52,9 +54,9 @@ class Repositorio:
                 escritor.writeheader()
             escritor.writerow(linha)
 
-    def salvar_csv(self, nome, campos, linhas):
+    def salvar_csv(self, nome, campos, linhas, encoding="utf-8"):
         arquivo = self.caminho(nome)
-        with arquivo.open("w", newline="", encoding="utf-8") as f:
+        with arquivo.open("w", newline="", encoding=encoding) as f:
             escritor = csv.DictWriter(f, fieldnames=campos, delimiter=";")
             escritor.writeheader()
             escritor.writerows(linhas)
