@@ -1,5 +1,417 @@
 {
-  "numeracao_inicial": {"OP": 4, "OC": 1},
-  "ultima_execucao": null,
-  "ordens": {}
+  "numeracao_inicial": {
+    "OP": 4,
+    "OC": 1
+  },
+  "ultima_execucao": "24/11/2026",
+  "ordens": {
+    "OP-0022": {
+      "item": "SA-007",
+      "quantidade": 126,
+      "semana_liberacao": 4,
+      "semana_entrega": 5,
+      "status": "LIBERADA",
+      "atrasada": false
+    },
+    "OC-0022": {
+      "item": "MP-302",
+      "quantidade": 20,
+      "semana_liberacao": 2,
+      "semana_entrega": 5,
+      "status": "FIRME",
+      "atrasada": false
+    },
+    "OP-0023": {
+      "item": "PA-001",
+      "quantidade": 20,
+      "semana_liberacao": 2,
+      "semana_entrega": 3,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OP-0024": {
+      "item": "PA-001",
+      "quantidade": 40,
+      "semana_liberacao": 4,
+      "semana_entrega": 5,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OP-0025": {
+      "item": "PA-001",
+      "quantidade": 25,
+      "semana_liberacao": 5,
+      "semana_entrega": 6,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OP-0026": {
+      "item": "PA-001",
+      "quantidade": 35,
+      "semana_liberacao": 7,
+      "semana_entrega": 8,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OP-0027": {
+      "item": "PA-002",
+      "quantidade": 10,
+      "semana_liberacao": 3,
+      "semana_entrega": 4,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OP-0028": {
+      "item": "PA-002",
+      "quantidade": 10,
+      "semana_liberacao": 5,
+      "semana_entrega": 6,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OP-0029": {
+      "item": "PA-002",
+      "quantidade": 10,
+      "semana_liberacao": 7,
+      "semana_entrega": 8,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OP-0030": {
+      "item": "PA-007",
+      "quantidade": 15,
+      "semana_liberacao": 1,
+      "semana_entrega": 2,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OP-0031": {
+      "item": "PA-007",
+      "quantidade": 23,
+      "semana_liberacao": 2,
+      "semana_entrega": 3,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OP-0032": {
+      "item": "PA-007",
+      "quantidade": 13,
+      "semana_liberacao": 3,
+      "semana_entrega": 4,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OP-0033": {
+      "item": "PA-007",
+      "quantidade": 34,
+      "semana_liberacao": 4,
+      "semana_entrega": 5,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OP-0034": {
+      "item": "PA-007",
+      "quantidade": 63,
+      "semana_liberacao": 5,
+      "semana_entrega": 6,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OP-0035": {
+      "item": "PA-007",
+      "quantidade": 23,
+      "semana_liberacao": 6,
+      "semana_entrega": 7,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OP-0036": {
+      "item": "PA-007",
+      "quantidade": 10,
+      "semana_liberacao": 7,
+      "semana_entrega": 8,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OP-0037": {
+      "item": "SA-007",
+      "quantidade": 35,
+      "semana_liberacao": 0,
+      "semana_entrega": 1,
+      "status": "PLANEJADA",
+      "atrasada": true
+    },
+    "OP-0038": {
+      "item": "SA-007",
+      "quantidade": 46,
+      "semana_liberacao": 1,
+      "semana_entrega": 2,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OP-0039": {
+      "item": "SA-007",
+      "quantidade": 26,
+      "semana_liberacao": 2,
+      "semana_entrega": 3,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OP-0040": {
+      "item": "SA-007",
+      "quantidade": 68,
+      "semana_liberacao": 3,
+      "semana_entrega": 4,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OP-0041": {
+      "item": "SA-007",
+      "quantidade": 46,
+      "semana_liberacao": 5,
+      "semana_entrega": 6,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OP-0042": {
+      "item": "SA-007",
+      "quantidade": 20,
+      "semana_liberacao": 6,
+      "semana_entrega": 7,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OP-0043": {
+      "item": "SA-010",
+      "quantidade": 40,
+      "semana_liberacao": 1,
+      "semana_entrega": 2,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OP-0044": {
+      "item": "SA-010",
+      "quantidade": 40,
+      "semana_liberacao": 3,
+      "semana_entrega": 4,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OP-0045": {
+      "item": "SA-010",
+      "quantidade": 40,
+      "semana_liberacao": 4,
+      "semana_entrega": 5,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OP-0046": {
+      "item": "SA-010",
+      "quantidade": 40,
+      "semana_liberacao": 6,
+      "semana_entrega": 7,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OP-0047": {
+      "item": "SA-020",
+      "quantidade": 80,
+      "semana_liberacao": 1,
+      "semana_entrega": 2,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OP-0048": {
+      "item": "SA-020",
+      "quantidade": 80,
+      "semana_liberacao": 3,
+      "semana_entrega": 4,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OP-0049": {
+      "item": "SA-020",
+      "quantidade": 80,
+      "semana_liberacao": 4,
+      "semana_entrega": 5,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OP-0050": {
+      "item": "SA-020",
+      "quantidade": 80,
+      "semana_liberacao": 6,
+      "semana_entrega": 7,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OC-0023": {
+      "item": "MP-100",
+      "quantidade": 300,
+      "semana_liberacao": 1,
+      "semana_entrega": 3,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OC-0024": {
+      "item": "MP-100",
+      "quantidade": 300,
+      "semana_liberacao": 4,
+      "semana_entrega": 6,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OC-0025": {
+      "item": "MP-101",
+      "quantidade": 50,
+      "semana_liberacao": 0,
+      "semana_entrega": 1,
+      "status": "PLANEJADA",
+      "atrasada": true
+    },
+    "OC-0026": {
+      "item": "MP-101",
+      "quantidade": 50,
+      "semana_liberacao": 5,
+      "semana_entrega": 6,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OC-0027": {
+      "item": "MP-200",
+      "quantidade": 200,
+      "semana_liberacao": -1,
+      "semana_entrega": 1,
+      "status": "PLANEJADA",
+      "atrasada": true
+    },
+    "OC-0028": {
+      "item": "MP-200",
+      "quantidade": 200,
+      "semana_liberacao": 4,
+      "semana_entrega": 6,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OC-0029": {
+      "item": "MP-201",
+      "quantidade": 2000,
+      "semana_liberacao": -1,
+      "semana_entrega": 1,
+      "status": "PLANEJADA",
+      "atrasada": true
+    },
+    "OC-0030": {
+      "item": "MP-201",
+      "quantidade": 2000,
+      "semana_liberacao": 1,
+      "semana_entrega": 3,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OC-0031": {
+      "item": "MP-201",
+      "quantidade": 2640,
+      "semana_liberacao": 2,
+      "semana_entrega": 4,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OC-0032": {
+      "item": "MP-201",
+      "quantidade": 2880,
+      "semana_liberacao": 4,
+      "semana_entrega": 6,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OC-0033": {
+      "item": "MP-202",
+      "quantidade": 100,
+      "semana_liberacao": -1,
+      "semana_entrega": 1,
+      "status": "PLANEJADA",
+      "atrasada": true
+    },
+    "OC-0034": {
+      "item": "MP-202",
+      "quantidade": 100,
+      "semana_liberacao": 1,
+      "semana_entrega": 3,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OC-0035": {
+      "item": "MP-202",
+      "quantidade": 100,
+      "semana_liberacao": 2,
+      "semana_entrega": 4,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OC-0036": {
+      "item": "MP-202",
+      "quantidade": 100,
+      "semana_liberacao": 4,
+      "semana_entrega": 6,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OC-0037": {
+      "item": "MP-300",
+      "quantidade": 50,
+      "semana_liberacao": 1,
+      "semana_entrega": 3,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OC-0038": {
+      "item": "MP-300",
+      "quantidade": 50,
+      "semana_liberacao": 3,
+      "semana_entrega": 5,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OC-0039": {
+      "item": "MP-300",
+      "quantidade": 50,
+      "semana_liberacao": 5,
+      "semana_entrega": 7,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OC-0040": {
+      "item": "MP-301",
+      "quantidade": 20,
+      "semana_liberacao": -1,
+      "semana_entrega": 2,
+      "status": "PLANEJADA",
+      "atrasada": true
+    },
+    "OC-0041": {
+      "item": "MP-301",
+      "quantidade": 25,
+      "semana_liberacao": 1,
+      "semana_entrega": 4,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OC-0042": {
+      "item": "MP-301",
+      "quantidade": 25,
+      "semana_liberacao": 2,
+      "semana_entrega": 5,
+      "status": "PLANEJADA",
+      "atrasada": false
+    },
+    "OC-0043": {
+      "item": "MP-301",
+      "quantidade": 35,
+      "semana_liberacao": 4,
+      "semana_entrega": 7,
+      "status": "PLANEJADA",
+      "atrasada": false
+    }
+  }
 }

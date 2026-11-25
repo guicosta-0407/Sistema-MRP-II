@@ -64,6 +64,11 @@ class CadastroItens:
         dados = {codigo: item.to_dict() for codigo, item in self.itens.items()}
         self.repositorio.salvar_json(self.ARQUIVO, dados)
 
+    def remover(self, codigo):
+        self.obter(codigo)
+        del self.itens[codigo]
+        self.salvar()
+
     def existe(self, codigo):
         return codigo in self.itens
 

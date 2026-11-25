@@ -3,7 +3,7 @@
     "descricao": "Bicicleta Aro 29 MTB",
     "tipo": "PA",
     "unidade": "un",
-    "custo": 0.0,
+    "custo": 792.6,
     "lead_time": 1,
     "estoque_seguranca": 5,
     "lote_minimo": 10
@@ -12,7 +12,7 @@
     "descricao": "Bicicleta Aro 29 Urbana",
     "tipo": "PA",
     "unidade": "un",
-    "custo": 0.0,
+    "custo": 622.6,
     "lead_time": 1,
     "estoque_seguranca": 5,
     "lote_minimo": 10
@@ -21,7 +21,7 @@
     "descricao": "Quadro aro 29 soldado",
     "tipo": "SA",
     "unidade": "un",
-    "custo": 0.0,
+    "custo": 128.0,
     "lead_time": 1,
     "estoque_seguranca": 10,
     "lote_minimo": 40
@@ -30,7 +30,7 @@
     "descricao": "Roda aro 29 montada",
     "tipo": "SA",
     "unidade": "un",
-    "custo": 0.0,
+    "custo": 139.8,
     "lead_time": 1,
     "estoque_seguranca": 10,
     "lote_minimo": 80
@@ -106,5 +106,23 @@
     "lead_time": 3,
     "estoque_seguranca": 10,
     "lote_minimo": 20
+  },
+  "PA-007": {
+    "descricao": "Freio dianteiro",
+    "tipo": "PA",
+    "unidade": "un",
+    "custo": 160.0,
+    "lead_time": 1,
+    "estoque_seguranca": 5,
+    "lote_minimo": 10
+  },
+  "SA-007": {
+    "descricao": "Alavanca do freio",
+    "tipo": "SA",
+    "unidade": "un",
+    "custo": 0,
+    "lead_time": 1,
+    "estoque_seguranca": 5,
+    "lote_minimo": 10
   }
 }

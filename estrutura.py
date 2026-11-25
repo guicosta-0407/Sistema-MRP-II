@@ -26,6 +26,17 @@ class Estrutura:
     def componentes(self, pai):
         return self.bom.get(pai, [])
 
+    def pais_de(self, codigo):
+        return [
+            pai
+            for pai, registros in self.bom.items()
+            if any(r["componente"] == codigo for r in registros)
+        ]
+
+    def em_uso(self, codigo):
+        tem_estrutura_propria = bool(self.bom.get(codigo))
+        return tem_estrutura_propria or bool(self.pais_de(codigo))
+
     def _validar(self, pai, componente, quantidade):
         item_pai = self.cadastro.obter(pai)
         item_componente = self.cadastro.obter(componente)
@@ -167,3 +178,26 @@ class Estrutura:
             self.exibir_arvore(codigo)
         except ValueError as erro:
             print(f"ERRO: {erro}.")
+
+    def onde_usado_interativo(self):
+        print(">> Onde o item e usado")
+        codigo = utils.ler_codigo(">> Codigo do item: ")
+        if not self.cadastro.existe(codigo):
+            print(f"ERRO: o item {codigo} nao esta cadastrado.")
+            return
+        pais = self.pais_de(codigo)
+        if not pais:
+            print(f"{codigo} nao e usado como componente em nenhum item.")
+            return
+        print(f"{codigo} e componente de:")
+        for pai in pais:
+            item_pai = self.cadastro.obter(pai)
+            quantidade = next(
+                r["quantidade"]
+                for r in self.componentes(pai)
+                if r["componente"] == codigo
+            )
+            print(
+                f"  - {pai} {item_pai.descricao} "
+                f"({utils.formatar_quantidade(quantidade)} {item_pai.unidade})"
+            )

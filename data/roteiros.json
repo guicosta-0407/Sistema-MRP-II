@@ -1,6 +1,22 @@
 {
-  "SA-010": {"centro": "CT-01", "tempo": 1.0},
-  "SA-020": {"centro": "CT-02", "tempo": 0.5},
-  "PA-001": {"centro": "CT-03", "tempo": 0.5},
-  "PA-002": {"centro": "CT-03", "tempo": 0.5}
+  "SA-010": {
+    "centro": "CT-01",
+    "tempo": 1.0
+  },
+  "SA-020": {
+    "centro": "CT-02",
+    "tempo": 0.5
+  },
+  "PA-001": {
+    "centro": "CT-03",
+    "tempo": 0.5
+  },
+  "PA-002": {
+    "centro": "CT-03",
+    "tempo": 0.5
+  },
+  "PA-007": {
+    "centro": "CT-07",
+    "tempo": 2.0
+  }
 }

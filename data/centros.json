@@ -1,5 +1,22 @@
 {
-  "CT-01": {"descricao": "Soldagem e pintura de quadros", "capacidade": 80.0, "custo_hora": 38.0},
-  "CT-02": {"descricao": "Montagem de rodas", "capacidade": 60.0, "custo_hora": 42.0},
-  "CT-03": {"descricao": "Montagem final", "capacidade": 16.0, "custo_hora": 40.0}
+  "CT-01": {
+    "descricao": "Soldagem e pintura de quadros",
+    "capacidade": 80.0,
+    "custo_hora": 38.0
+  },
+  "CT-02": {
+    "descricao": "Montagem de rodas",
+    "capacidade": 60.0,
+    "custo_hora": 42.0
+  },
+  "CT-03": {
+    "descricao": "Montagem final",
+    "capacidade": 16.0,
+    "custo_hora": 40.0
+  },
+  "CT-07": {
+    "descricao": "UFCI-MG",
+    "capacidade": 36.0,
+    "custo_hora": 80.0
+  }
 }
